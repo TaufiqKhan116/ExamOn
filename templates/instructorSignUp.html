@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+{% extends 'base.html' %}
+{% block content %}
+
+  <div class="container py-5">
+    <h2 class="text-left">Instructor Registration</h2>
+
+    <div class="row m-0 d-flex justify-content-right" style="background-color:oldlace;">
+      <!-- <form class="my-5 col-xl-6 bg-success" method="post"> -->
+      <form class="my-5 col-xl-6" method="post">
+        {% csrf_token %}
+        <div class="row m-0 d-flex justify-content-right">
+          <div class="col-xl-12">
+            <div class="form-group">
+              <label>Username</label>
+              <input type="text" class="form-control" name="username" placeholder="Enter username" required>
+            </div>
+
+            <div class="form-group">
+              <label>Create New Password</label>
+              <input type="password" class="form-control" name="password" placeholder="Enter password" required>
+            </div>
+
+            <div class="form-group">
+              <label>Confirm Password</label>
+              <input type="password" class="form-control" name="confirmpassword" placeholder="Confirm password" required>
+            </div>
+
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" class="form-control" name="email" placeholder="Enter email" required>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-success float-center mt-4" type="submit" style="margin-right: 120px !important;">Submit</button>
+      </form>
+      <!-- <div class="col-xl-6 bg-info"> -->
+      <div class="col-xl-6">
+        {% load static %}
+        <img src="{% static 'reg.png' %}" width="330px" height="330px" style="margin-top: 100px;">
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

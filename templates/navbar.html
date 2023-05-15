@@ -1,0 +1,22 @@
+{% include 'bootstrap.html' %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item active"><a class="nav-link" href="{% url 'exam:index' %}">Home <span class="sr-only">(current)</span></a></li>
+        {% if user.is_authenticated and user.isQuestionSetter %}
+            <li class="nav-item active"><a class="nav-link" href="{% url 'exam:resultteacher' %}">Result</a></li>
+        {% elif user.is_authenticated and user.isStudent %}
+            <li class="nav-item active"><a class="nav-link" href="{% url 'exam:resultstudent' %}">Result</a></li>
+        {% else %}
+            <li class="nav-item active"><a class="nav-link" href="{% url 'exam:about' %}">About</a></li> 
+        {% endif %}   
+        <li class="nav-item active"><a class="nav-link" href="{% url 'exam:contact' %}">Contact us</a></li>
+    </ul>
+
+    {% if user.is_authenticated %}
+        <button type="button" class="btn btn-outline-success my-2 my-sm-0" ta><a href="{% url 'exam:logout' %}">Log out</a></button>
+        <a class="nav-link" href="{% url 'exam:logout' %}">{{user.username}}<span class="sr-only">(current)</span></a>   
+    {% else %}
+        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#loginModal">Log in</button>
+        <button type="button" class="btn btn-outline-success my-2 my-sm-0" data-toggle="modal" data-target="#signupModal">Sign up</button>
+    {% endif %}
+</nav>

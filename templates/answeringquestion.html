@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% include 'updatequestionmodal.html' %}
+<form method="POST" id="answerform">
+    <input type="hidden" id="group" name="group" value="{{ mycontext.group }}">
+    <input type="hidden" id="time" name="time" value="{{ mycontext.elapsedtime }}">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-info">
+          <h5 class="modal-title" id="grouplabel" style="color: white;">{{ mycontext.group }}</h5>
+          <h6 class="modal-title" id="timelabel" style="color: white;">{{ mycontext.elapsedtime }} miniute(s)</h6>
+        </div>
+        <div class="modal-body">
+            {% csrf_token %}
+            {% for k1, value in mycontext.items %}
+                {% if value.type == 'tf' %}
+                    <div class="form-group" id="tfQuestion">
+                        <label>Question - {{ forloop.counter }}</label>
+                        <input type="text" class="form-control" name="question" value="{{ value.question }}" id="question">
+                    </div>
+                    <input type="radio" id="true{{ value.question }}" name="{{ value.question }}" value="True">
+                    <label for="true{{ value.question }}">True</label><br>
+                    <input type="radio" id="False{{ value.question }}" name="{{ value.question }}" value="False">
+                    <label for="false{{ value.question }}">False</label><br>
+                {% elif value.type == 'mcq' %}
+                    <div class="form-group">
+                        <label>Question - {{ forloop.counter }}</label>
+                        <input type="text" class="form-control" name="question" value="{{ value.question }}">
+                    </div>
+                    <input type="radio" id="opt1{{ value.question }}" name="{{ value.question }}" value="1">
+                    <label for="opt1{{ value.question }}">{{ value.opt1 }}</label><br>
+                    <input type="radio" id="opt2{{ value.question }}" name="{{ value.question }}" value="2">
+                    <label for="opt2{{ value.question }}">{{ value.opt2 }}</label><br>
+                    <input type="radio" id="opt3{{ value.question }}" name="{{ value.question }}" value="3">
+                    <label for="opt3{{ value.question }}">{{ value.opt3 }}</label><br>
+                    <input type="radio" id="opt4{{ value.question }}" name="{{ value.question }}" value="4">
+                    <label for="opt4{{ value.question }}">{{ value.opt4 }}</label><br>
+                {% endif %}
+            {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="row m-0 d-flex justify-content-center">
+        <input type="submit" class="btn btn-info"/>
+    </div>
+</form>
+{% endblock %}

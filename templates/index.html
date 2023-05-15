@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container-fluid">
+    <div class="row m-0 d-flex justify-content-center bg-light" style="padding-top: 50px; padding-bottom: 50px;">
+      <div class="col-xl-5 mt-4">
+        <h2>
+          Online Exam Platform
+        </h2>
+        <h5>
+          EXPLORE OUR EXAMINATION SYSTEM AND TEST YOURSELF
+        </h5>
+        {% if msg != '' %}
+          <h4 style="color: crimson;">{{ msg }}</h4>
+        {% endif %}
+        {% if user.is_authenticated and user.isQuestionSetter %}
+          Explore all <a href="{% url 'exam:pendingstudents' %}">Pending requests</a><br>
+          <a href="{% url 'exam:setquestion' %}"><button type="button" class="btn btn-outline-success" data-toggle="modal">Set Questions</button></a>
+        {% elif user.is_authenticated and user.isStudent %}
+          <a href="{% url 'exam:questionsetsstudent' %}"><button type="button" class="btn btn-outline-success" data-toggle="modal">View questions</button></a>
+        {% else %}
+          <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#loginModal">Get Started</button>
+        {% endif %}
+      </div>
+      <div class="col-xl-0 ml-0">
+        {% load static %}
+        <img src="{% static 'banner pic.png' %}" alt="" class="banner-pic">
+      </div>
+    </div>
+  </div>
+{% endblock %}

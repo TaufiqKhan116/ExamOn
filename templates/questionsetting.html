@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% include 'setquestionmodal.html' %}
+
+<div class="container py-5">
+    <div class="row m-0">
+        <h3>All question sets</h3>
+        <span class="ml-auto">
+            <button class="btn btn-success float-center" type="submit" data-toggle="modal" data-target="#setquestionmodal">
+                Add question
+            </button>
+        </span>
+    </div><hr>
+
+    <div class="row m-0 my-4">
+        {% for group_name in q_group_list %}
+        <div class="card mx-4" style="width: 18rem;">
+            <img class="card-img-top" src="https://static6.depositphotos.com/1003536/615/v/600/depositphotos_6152121-stock-illustration-question-mark-with-speech-bubles.jpg" alt="Card image cap">
+            <div class="card-body">
+            <h5 class="card-title">{{ group_name }}</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="{% url 'exam:viewquestions' group_name %}" class="btn btn-primary">Explore</a>
+            </div>
+        </div>
+        <!-- <a href="{% url 'exam:viewquestions' group_name %}"><button type="button" class="btn btn-secondary my-2 my-sm-0" style="width: 10rem;">{{ group_name }}</button></a> -->
+        {% endfor %}
+    </div>
+  </div>
+{% endblock %}

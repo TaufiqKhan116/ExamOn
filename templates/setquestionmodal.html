@@ -1,0 +1,137 @@
+<div class="modal fade" id="setquestionmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Set Question</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form class="my-0 col-xl-12" action="{% url 'exam:setquestion' %}" method="post">
+            {% csrf_token %}
+
+            <!-- existing question set -->
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect01">Existing question set</label>
+                </div>
+                <!-- <select class="form-control" id="inputGroupSelect01" name="existingQuestionSet">
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                  <option value="3">Three</option>
+                </select> -->
+                <select class="form-control" id="inputGroupSelect01" name="existingQuestionSet">
+                  {% for group_name in q_group_list %}
+                    <option value="{{group_name}}">{{ group_name }}</option>
+                  {% endfor %}
+                </select>
+            </div>
+
+            <!-- new question set -->
+            <label>New question set</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <!-- is new question set needed? checkbox -->
+                    <input type="checkbox" aria-label="Checkbox for following text input" name="isNewQuestionSet">
+                  </div>
+                </div>
+                <!-- name of new question set -->
+                <input type="text" class="form-control" aria-label="Text input with checkbox" name="newQuestionSet" placeholder="New question set">
+            </div>
+
+            <!-- questions -->
+            <div class="form-group">
+                <label>Question</label>
+                <input type="text" class="form-control" name="question" placeholder="Enter question" required>
+            </div>
+
+            <!-- type of questions -->
+            <label>Answer type</label>
+
+            <!-- true/ false type question -->
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="typeOfQuestion" id="flexRadioDefault1" value="tf">
+                <label class="form-check-label" for="flexRadioDefault1">
+                  True/ False
+                </label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="answer_tf" id="flexRadioDefault2" value="true">
+                    <label class="form-check-label" for="flexRadioDefault2">
+                      True
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="answer_tf" id="flexRadioDefault2" value="false">
+                    <label class="form-check-label" for="flexRadioDefault2">
+                      False
+                    </label>
+                </div>
+            </div>
+
+            <!-- MCQ type questions -->
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="typeOfQuestion" id="flexRadioDefault2" value="mcq">
+                <label class="form-check-label" for="flexRadioDefault2">
+                  MCQ
+                </label>
+                <div class="form-group">
+                    <label>1.</label>
+                    <input type="text" class="form-control" name="mcq_option_1" placeholder="Enter question" >
+                </div>
+                <div class="form-group">
+                    <label>2.</label>
+                    <input type="text" class="form-control" name="mcq_option_2" placeholder="Enter question" >
+                </div>
+                <div class="form-group">
+                    <label>3.</label>
+                    <input type="text" class="form-control" name="mcq_option_3" placeholder="Enter question" >
+                </div>
+                <div class="form-group">
+                    <label>4.</label>
+                    <input type="text" class="form-control" name="mcq_option_4" placeholder="Enter question" >
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <label class="input-group-text" for="inputGroupSelect01">Correct answer</label>
+                    </div>
+                    <select class="form-control" id="inputGroupSelect01" name="mcq_answer">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- File type questions -->
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="typeOfQuestion" id="flexRadioDefault1" value="ftq">
+              <label class="form-check-label" for="flexRadioDefault1">
+                Written (Students have to submit files)
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label>Marks</label>
+              <input type="number" class="form-control" name="marks" placeholder="Enter marks" required>
+            </div>
+
+            <!-- MCQ type questions with multiple choice -->
+            <!-- <div class="form-check">
+                <input class="form-check-input" type="radio" name="typeOfQuestion" id="flexRadioDefault2" value="mcqm" checked>
+                <label class="form-check-label" for="flexRadioDefault2">
+                  MCQ with multiple answers
+                </label>
+            </div> -->
+
+            <button class="btn btn-success float-center mt-4" type="submit" style="margin-right: 120px !important;">Create</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>

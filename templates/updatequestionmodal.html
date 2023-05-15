@@ -1,0 +1,33 @@
+<div class="modal fade" id="updatequestionmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Log in</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {% load static %}
+          <img src="{% static 'loginico.png' %}" width="30px" height="40px" >
+          <form class="my-5 col-xl-12" action="{% url 'exam:login' %}" method="post">
+            {% csrf_token %}
+            <!-- email field -->
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" class="form-control" name="email" placeholder="Enter email" required>
+            </div>
+            <!-- password field -->
+            <div class="form-group">
+              <label>Password</label>
+              <input type="password" class="form-control" name="password" placeholder="Enter password" required>
+            </div>
+            <button class="btn btn-success float-center mt-4" type="submit" style="margin-right: 120px !important;">Log In</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>

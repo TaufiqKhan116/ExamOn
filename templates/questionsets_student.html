@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% include 'setquestionmodal.html' %}
+{% csrf_token %}
+
+<div class="row m-0 my-4">
+    {% for group_name in q_group_list %}
+    <div class="card mx-4" style="width: 18rem;">
+      <img class="card-img-top" src="https://static6.depositphotos.com/1003536/615/v/600/depositphotos_6152121-stock-illustration-question-mark-with-speech-bubles.jpg" alt="Card image cap">
+      <div class="card-body">
+      <h5 class="card-title">{{ group_name }}</h5>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <button type="button" class="btn btn-secondary my-2 my-sm-0" style="width: 10rem;" onclick='getQuestion(this, "{{ group_name }}")'>Enter</button>
+      </div>
+    </div>
+    <!--href="{% url 'exam:answeringquestion' group_name %}"-->
+    {% endfor %}
+</div>
+<script>
+  function getQuestion(ob, group) {
+    var passcode = prompt("Enter passcode:", "")
+
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8000/answeringquestion/" + group + "/",
+        headers: {
+            'X-CSRFToken': csrftoken,
+        },
+        data: {
+            requesttype : 'passcodecheck',
+            questiontype : 'none',
+            group : group,
+            passcode : passcode
+        },
+        success: function(result) {
+            $("html").html(result);
+            setTimeout(function() {
+              console.log($('#answerform').submit())
+            }, parseFloat($('#time').val()) * 60 * 1000)
+        },
+        error: function(result) {
+            alert('Incorrect passcode!!!')
+            location.reload()
+        },
+    })
+  }
+</script>
+{% endblock %}

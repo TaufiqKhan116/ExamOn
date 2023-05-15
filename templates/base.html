@@ -1,0 +1,20 @@
+<html>
+    <head>
+        <title>ExamOn</title>
+        <meta charset="UTF-8">
+
+        {% include 'bootstrap.html' %}
+
+    </head>
+    <body>
+        {% include 'navbar.html' %}
+
+        {% include 'signupmodal.html' %}
+
+        {% include 'loginmodal.html' %}
+
+        {% block content %}
+        ...
+        {% endblock %}
+    </body>
+</html>

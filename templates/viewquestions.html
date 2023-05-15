@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% include 'updatequestionmodal.html' %}
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="grouplabel">{{ mycontext.group }}</h5>
+          <h6 class="modal-title" id="timelabel">{{ mycontext.elapsedtime }} miniute(s)</h6>
+          <button type="button" class="btn btn-info" style="width: 5rem;" id="timeupdate" onclick='updatetime(this, "{{ mycontext.group }}", "{{ mycontext.elapsedtime }}")'>Edit</button>
+        </div>
+        <div class="modal-body">
+            {% csrf_token %}
+            {% for k1, value in mycontext.items %}
+                {% if value.type == 'tf' %}
+                    <div class="form-group my-4" id="tfQuestion">
+                        <div class="row m-0 mb-2">
+                            <label>Question - {{ forloop.counter }}</label>
+                            <div class="row ml-auto m-0">
+                                <button type="button" class="btn btn-outline-info mr-1" style="width: 5rem;" id="tfUpdate" onclick="updatetf(this, '{{ value.question }}', '{{ value.answer }}')">Update</button>
+                                <button type="button" class="btn btn-outline-danger" style="width: 5rem;" onclick="deletetf(this, '{{ value.question }}')">Delete</button>
+                            </div>
+                        </div>
+                        <input type="text" class="form-control" name="question" placeholder="{{ value.question }}" id="question" disabled>
+                        Answer: {{value.answer}}
+                    </div>
+                {% elif value.type == 'mcq' %}
+                    <div class="my-4">
+                        <div class="form-group">
+                            <div class="row m-0 mb-2">
+                                <label>Question - {{ forloop.counter }}</label>
+                                <div class="row ml-auto m-0">
+                                    <button type="button" class="btn btn-outline-info mr-1" style="width: 5rem;" onclick="updatemcq(this, '{{ value.question }}', '{{ value.opt1 }}', '{{ value.opt2 }}', '{{ value.opt3 }}', '{{ value.opt4 }}', '{{ value.answer }}')">Update</button>
+                                    <button type="button" class="btn btn-outline-danger" style="width: 5rem;" onclick="deletemcq(this, '{{ value.question }}')">Delete</button>
+                                </div>
+                            </div>
+                            <input type="text" class="form-control" name="question" placeholder="{{ value.question }}" disabled>
+                        </div>
+                        <ol>
+                            <li>{{ value.opt1 }}</li>
+                            <li>{{ value.opt2 }}</li>
+                            <li>{{ value.opt3 }}</li>
+                            <li>{{ value.opt4 }}</li>
+                        </ol>
+                        Correct answer: {{ value.answer }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="row m-0">
+        <div class="col justify-content-center">
+            <h5 id="passlabel" class="text-center">Passcode: <span style="color: lightslategray;">{{ mycontext.passcode }}</span></h5>
+            <div class="row d-flex justify-content-center">
+                <button type="button" class="btn btn-info" style="width: 5rem;" id="timeupdate" onclick='updatepasscode(this, "{{ mycontext.group }}", "{{ mycontext.passcode }}")'>Edit</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        function updatepasscode(ob, group, passcode) {
+            var newpasscode = prompt("Enter new passcode:", passcode)
+
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+            $.ajax({
+                type: "POST",
+                url: window.location.toString(),
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                },
+                data: {
+                    requesttype : 'passcodeupdate',
+                    questiontype : 'none',
+                    group : group,
+                    passcode : newpasscode
+                },
+                success: function(result) {
+                    location.reload()
+                },
+                error: function(result) {
+                    alert('error');
+                }
+            })
+        }
+
+        function updatetime(ob, group, timelimit) {
+            var newtimelimit = prompt("Enter new time limit in miniute:", timelimit)
+
+            var url = "{{ mycontext.group }}"
+            url = url.replace("'", "%27")
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+            $.ajax({
+                type: "POST",
+                url: window.location.toString(),
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                },
+                data: {
+                    requesttype : 'timeupdate',
+                    questiontype : 'none',
+                    group : group,
+                    elapsedtime : newtimelimit
+                },
+                success: function(result) {
+                    location.reload()
+                },
+                error: function(result) {
+                    alert('error');
+                }
+            })
+        }
+
+        function updatetf(ob, previousQuestion, previousAnswer) {
+            var newQuestion = prompt("Enter new question:", previousQuestion)
+            var newAnswer = prompt("True/False", previousAnswer)
+
+            var url = "{{ mycontext.group }}"
+            url = url.replace("'", "%27")
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+            $.ajax({
+                type: "POST",
+                url: window.location.toString(),
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                },
+                data: {
+                    requesttype : 'update',
+                    questiontype : 'tf',
+                    previousquestion : previousQuestion,
+                    newquestion : newQuestion,
+                    newanswer : newAnswer
+                },
+                success: function(result) {
+                    location.reload()
+                },
+                error: function(result) {
+                    alert('error');
+                }
+            })
+        }
+
+        function deletetf(ob, question) {
+            if(confirm('Are you sure?')) {
+                var url = "{{ mycontext.group }}"
+                url = url.replace("'", "%27")
+                const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+                $.ajax({
+                    type: "POST",
+                    url: window.location.toString(),
+                    headers: {
+                        'X-CSRFToken': csrftoken,
+                    },
+                    data: {
+                        requesttype : 'delete',
+                        questiontype : 'tf',
+                        question : question
+                    },
+                    success: function(result) {
+                        location.reload()
+                    },
+                    error: function(result) {
+                        alert('error');
+                    }
+                })
+            }
+        }
+
+        function updatemcq(ob, previousQuestion, popt1, popt2, popt3, popt4, previousAnswer) {
+            var newQuestion = prompt('Enter new question:', previousQuestion)
+            var nopt1 = prompt('Enter first option :', popt1)
+            var nopt2 = prompt('Enter second option :', popt2) 
+            var nopt3 = prompt('Enter third option :', popt3)
+            var nopt4 = prompt('Enter fourth option :', popt4)
+            var newAnswer = prompt("1, 2, 3, 4", previousAnswer)
+
+            var url = "{{ mycontext.group }}"
+            url = url.replace("'", "%27")
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+            $.ajax({
+                type: "POST",
+                url: window.location.toString(),
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                },
+                data: {
+                    requesttype : 'update',
+                    questiontype : 'mcq',
+                    previousquestion : previousQuestion,
+                    newquestion : newQuestion,
+                    nopt1 : nopt1,
+                    nopt2 : nopt2,
+                    nopt3 : nopt3,
+                    nopt4 : nopt4,
+                    newanswer : newAnswer
+                },
+                success: function(result) {
+                    location.reload()
+                },
+                error: function(result) {
+                    alert('error');
+                }
+            })
+        }
+
+        function deletemcq(ob, question) {
+            if(confirm('Are you sure?')) {
+                var url = "{{ mycontext.group }}"
+                url = url.replace("'", "%27")
+                const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+                $.ajax({
+                    type: "POST",
+                    url: window.location.toString(),
+                    headers: {
+                        'X-CSRFToken': csrftoken,
+                    },
+                    data: {
+                        requesttype : 'delete',
+                        questiontype : 'mcq',
+                        question : question
+                    },
+                    success: function(result) {
+                        location.reload()
+                    },
+                    error: function(result) {
+                        alert('error');
+                    }
+                })
+            }
+        }
+    </script>
+
+{% endblock %}

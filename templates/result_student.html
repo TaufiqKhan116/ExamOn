@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<table class="table table-dark col-xl-5 mx-auto my-5">
+    <tr>
+        <th>Group</th>
+        <th>Marks</th>
+    </tr>
+    {% for group, marks in result_dict.items %}
+        <tr>
+            <td>{{ group }}</td>
+            <td>{{ marks }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

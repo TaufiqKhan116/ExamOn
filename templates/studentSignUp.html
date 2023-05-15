@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+{% extends 'base.html' %}
+{% block content %}
+
+  <div class="container py-5">
+    <h2 class="text-left">Student Registration</h2>
+
+    <div class="row m-0 d-flex justify-content-center" style="background-color:oldlace;">
+      <form class="my-5 col-xl-12" method="post">
+        {% csrf_token %}
+        <div class="row m-0 d-flex justify-content-right">
+          <div class="col-xl-5">
+            <div class="form-group">
+              <label>Username</label>
+              <input type="text" class="form-control" name="username" placeholder="Enter username" required>
+            </div>
+
+            <div class="form-group">
+              <label>Create New Password</label>
+              <input type="password" class="form-control" name="password" placeholder="Enter password" required>
+            </div>
+
+            <div class="form-group">
+              <label>Confirm Password</label>
+              <input type="password" class="form-control" name="confirmpassword" placeholder="Confirm password" required>
+            </div>
+
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" class="form-control" name="email" placeholder="Enter email" required>
+            </div>
+
+            <div class="form-group">
+              <label>ID</label>
+              <input type="number" class="form-control" name="ID" placeholder="Enter ID" required>
+            </div>
+          </div>
+          <div class="col-xl-5">
+            {% load static %}
+            <img src="{% static 'student.png' %}" width="330px" height="330px"/>
+          </div>
+        </div>
+        <button class="btn btn-success float-center mt-4" type="submit" style="margin-right: 120px !important;">Submit</button>
+      </form>
+    </div>
+  </div>
+
+{% endblock %}
